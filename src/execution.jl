@@ -118,7 +118,7 @@ function _run(b::Benchmark, p::Parameters; verbose=false, pad="", warmup=true, k
     params.gcsample && gcscrub()
     trial_contents = b.samplefunc(b.quote_vals, params)
     push!(trial, trial_contents)
-    return_val = trial_contents.__return_val
+    return_val = trial_contents.return_val
     iters = 2
     while (Base.time() - start_time) < params.seconds && iters ≤ params.samples
         params.gcsample && gcscrub()
@@ -190,7 +190,7 @@ function _lineartrial(b::Benchmark, p::Parameters=b.params; maxevals=RESOLUTION,
     for evals in eachindex(estimates)
         params.gcsample && gcscrub()
         params.evals = evals
-        estimates[evals] = first(b.samplefunc(b.quote_vals, params))
+        estimates[evals] = b.samplefunc(b.quote_vals, params).time
         completed += 1
         ((time() - start_time) > params.seconds) && break
     end
@@ -610,7 +610,7 @@ function generate_benchmark_definition(
                         )
                     end
                 end
-                return (;
+                return BenchmarkTools.TrialContents(
                     __time,
                     __gctime,
                     __memory,
