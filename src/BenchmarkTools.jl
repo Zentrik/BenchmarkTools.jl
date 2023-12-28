@@ -10,8 +10,8 @@ using Printf
 using Profile
 using Compat
 
-import LinuxPerf
-import Random
+using LinuxPerf: LinuxPerf
+using Random: Random
 
 const BENCHMARKTOOLS_VERSION = if VERSION >= v"1.9"
     pkgversion(BenchmarkTools)
