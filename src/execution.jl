@@ -554,9 +554,6 @@ function generate_benchmark_definition(
             end
         )
     end
-    experimental_enable_linux_perf = true # TODO: take this as input from the user
-    # TODO: let the user actually provide these options.
-    linux_perf_opts = LinuxPerf.parse_pstats_options([])
     return Core.eval(
         eval_module,
         quote
@@ -589,13 +586,13 @@ function generate_benchmark_definition(
                         __evals,
                     ),
                 )
-                if $(experimental_enable_linux_perf)
+                if $(params.experimental_enable_linux_perf)
                     # Based on https://github.com/JuliaPerf/LinuxPerf.jl/blob/a7fee0ff261a5b5ce7a903af7b38d1b5c27dd931/src/LinuxPerf.jl#L1043-L1061
                     __linux_perf_groups = BenchmarkTools.LinuxPerf.set_default_spaces(
-                        $(linux_perf_opts.events), $(linux_perf_opts.spaces)
+                        $(params.linux_perf_options.events), $(params.linux_perf_options.spaces)
                     )
                     __linux_perf_bench = BenchmarkTools.LinuxPerf.make_bench_threaded(
-                        __linux_perf_groups; threads=$(linux_perf_opts.threads)
+                        __linux_perf_groups; threads=$(params.linux_perf_options.threads)
                     )
                     BenchmarkTools.LinuxPerf.enable!(__linux_perf_bench)
                     # We'll just run it one time.
@@ -609,6 +606,9 @@ function generate_benchmark_definition(
                             __linux_perf_bench
                         )
                     end
+                else
+                    __return_val_2 = nothing
+                    __linux_perf_stats = nothing
                 end
                 return BenchmarkTools.TrialContents(
                     __time,
