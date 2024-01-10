@@ -89,6 +89,10 @@ function recover(x::Vector)
                 # JSON spec doesn't support Inf
                 # These fields should all be >= 0, so we can ignore -Inf case
                 typemax(ft)
+            elseif fn == "enable_linux_perf" && !haskey(fields, fn)
+                false
+            elseif fn == "linux_perf_options" && !haskey(fields, fn)
+                String[]
             else
                 convert(ft, fields[fn])
             end
