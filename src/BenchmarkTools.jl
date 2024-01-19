@@ -22,7 +22,7 @@ end
 const LINUXPERF_VERSION = if VERSION >= v"1.9"
     pkgversion(LinuxPerf)
 else
-    v"0.3.6"
+    v"0.3.7"
 end
 
 ##############
