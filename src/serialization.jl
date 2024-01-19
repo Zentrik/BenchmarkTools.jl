@@ -91,8 +91,6 @@ function recover(x::Vector)
                 typemax(ft)
             elseif fn == "enable_linux_perf" && !haskey(fields, fn)
                 false
-            elseif fn == "linux_perf_options" && !haskey(fields, fn)
-                String[]
             else
                 convert(ft, fields[fn])
             end
