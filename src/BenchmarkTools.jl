@@ -15,7 +15,7 @@ using Random: Random
 const BENCHMARKTOOLS_VERSION = if VERSION >= v"1.9"
     pkgversion(BenchmarkTools)
 else
-    v"1.4.0"
+    v"1.5.0"
 end
 
 const LINUXPERF_VERSION = if VERSION >= v"1.9"
