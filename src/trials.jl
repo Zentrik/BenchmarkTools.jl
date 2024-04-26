@@ -9,6 +9,10 @@ mutable struct Trial
     memory::Int
     allocs::Int
     linux_perf_stats::Union{LinuxPerf.Stats,Nothing}
+
+    function Trial(params, times, gctimes, memory, allocs, linux_perf_stats=nothing)
+        return new(params, times, gctimes, memory, allocs, linux_perf_stats)
+    end
 end
 
 function Trial(params::Parameters)
@@ -113,6 +117,10 @@ mutable struct TrialEstimate
     memory::Int
     allocs::Int
     linux_perf_stats::Union{LinuxPerf.Stats,Nothing}
+
+    function TrialEstimate(params, times, gctime, memory, allocs, linux_perf_stats=nothing)
+        return new(params, times, gctime, memory, allocs, linux_perf_stats)
+    end
 end
 
 function TrialEstimate(trial::Trial, t, gct)
