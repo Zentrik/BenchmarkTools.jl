@@ -127,6 +127,7 @@ function _run(b::Benchmark, p::Parameters; verbose=false, pad="", warmup=true, k
         iters += 1
     end
 
+    # Should we just force this off on platforms that aren't going to support it
     if params.enable_linux_perf
         params.gcsample && gcscrub()
         trial.linux_perf_stats = b.linux_perf_func(b.quote_vals, params)
@@ -626,7 +627,7 @@ function generate_benchmark_definition(
                     end
                     return __linux_perf_stats
                 catch
-                    rethrow()
+                    rethrow() # TODO: Maybe just warn, crashing a big benchmark suite cause a single had a problem would be a bit much
                 finally
                     close(__linux_perf_bench)
                     $(teardown)
