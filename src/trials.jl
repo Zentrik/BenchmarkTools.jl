@@ -15,9 +15,7 @@ mutable struct Trial
     end
 end
 
-function Trial(params::Parameters)
-    return Trial(params, Float64[], Float64[], typemax(Int), typemax(Int), nothing)
-end
+Trial(params::Parameters) = Trial(params, Float64[], Float64[], typemax(Int), typemax(Int))
 
 function Base.:(==)(a::Trial, b::Trial)
     return a.params == b.params &&

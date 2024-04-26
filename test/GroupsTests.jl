@@ -15,15 +15,11 @@ seteq(a, b) = length(a) == length(b) == length(intersect(a, b))
 
 g1 = BenchmarkGroup(["1", "2"])
 
-t1a = TrialEstimate(
-    Parameters(; time_tolerance=0.05, memory_tolerance=0.05), 32, 1, 2, 3, nothing
-)
+t1a = TrialEstimate(Parameters(; time_tolerance=0.05, memory_tolerance=0.05), 32, 1, 2, 3)
 t1b = TrialEstimate(
-    Parameters(; time_tolerance=0.40, memory_tolerance=0.40), 4123, 123, 43, 9, nothing
+    Parameters(; time_tolerance=0.40, memory_tolerance=0.40), 4123, 123, 43, 9
 )
-tc = TrialEstimate(
-    Parameters(; time_tolerance=1.0, memory_tolerance=1.0), 1, 1, 1, 1, nothing
-)
+tc = TrialEstimate(Parameters(; time_tolerance=1.0, memory_tolerance=1.0), 1, 1, 1, 1)
 
 g1["a"] = t1a
 g1["b"] = t1b
@@ -34,18 +30,16 @@ g1similar = similar(g1)
 
 g2 = BenchmarkGroup(["2", "3"])
 
-t2a = TrialEstimate(
-    Parameters(; time_tolerance=0.05, memory_tolerance=0.05), 323, 1, 2, 3, nothing
-)
+t2a = TrialEstimate(Parameters(; time_tolerance=0.05, memory_tolerance=0.05), 323, 1, 2, 3)
 t2b = TrialEstimate(
-    Parameters(; time_tolerance=0.40, memory_tolerance=0.40), 1002, 123, 43, 9, nothing
+    Parameters(; time_tolerance=0.40, memory_tolerance=0.40), 1002, 123, 43, 9
 )
 
 g2["a"] = t2a
 g2["b"] = t2b
 g2["c"] = tc
 
-trial = BenchmarkTools.Trial(Parameters(), [1, 2, 5], [0, 1, 1], 3, 56, nothing)
+trial = BenchmarkTools.Trial(Parameters(), [1, 2, 5], [0, 1, 1], 3, 56)
 
 gtrial = BenchmarkGroup([], Dict("t" => trial))
 
@@ -157,10 +151,10 @@ groupsa["g1"] = g1
 groupsa["g2"] = g2
 g3a = addgroup!(groupsa, "g3", ["3", "4"])
 g3a["c"] = TrialEstimate(
-    Parameters(; time_tolerance=0.05, memory_tolerance=0.05), 6341, 23, 41, 536, nothing
+    Parameters(; time_tolerance=0.05, memory_tolerance=0.05), 6341, 23, 41, 536
 )
 g3a["d"] = TrialEstimate(
-    Parameters(; time_tolerance=0.13, memory_tolerance=0.13), 12341, 3013, 2, 150, nothing
+    Parameters(; time_tolerance=0.13, memory_tolerance=0.13), 12341, 3013, 2, 150
 )
 
 groups_copy = copy(groupsa)
@@ -171,10 +165,10 @@ groupsb["g1"] = g1
 groupsb["g2"] = g2
 g3b = addgroup!(groupsb, "g3", ["3", "4"])
 g3b["c"] = TrialEstimate(
-    Parameters(; time_tolerance=0.05, memory_tolerance=0.05), 1003, 23, 41, 536, nothing
+    Parameters(; time_tolerance=0.05, memory_tolerance=0.05), 1003, 23, 41, 536
 )
 g3b["d"] = TrialEstimate(
-    Parameters(; time_tolerance=0.23, memory_tolerance=0.23), 25341, 3013, 2, 150, nothing
+    Parameters(; time_tolerance=0.23, memory_tolerance=0.23), 25341, 3013, 2, 150
 )
 
 groupstrial = BenchmarkGroup()

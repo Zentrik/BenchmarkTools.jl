@@ -126,7 +126,9 @@ end
 end
 
 @testset "Inf in Paramters struct" begin
-    params = BenchmarkTools.Parameters(Inf, 10000, 1, false, Inf, true, false, Inf, Inf, false)
+    params = BenchmarkTools.Parameters(
+        Inf, 10000, 1, false, Inf, true, false, Inf, Inf, false
+    )
 
     io = IOBuffer()
     BenchmarkTools.save(io, params)
