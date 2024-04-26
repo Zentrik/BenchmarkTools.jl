@@ -388,20 +388,20 @@ GC.gc()
 # Linux Perf Integration #
 ##################################
 
-b = @benchmarkable sin(42.)
-results = run(b, seconds=1, enable_linux_perf=true)
+b = @benchmarkable sin(42.0)
+results = run(b; seconds=1, enable_linux_perf=true)
 @test results.linux_perf_stats !== nothing
 @test any(reults.linux_perf_stats.threads) do thread
     clock = LinuxPerf.scaledcount(thread["task-clock"])
     !isnan(clock) && clock > 0
 end
 
-b = @benchmarkable sin(42.)
-results = run(b, seconds=1, enable_linux_perf=false)
+b = @benchmarkable sin(42.0)
+results = run(b; seconds=1, enable_linux_perf=false)
 @test results.linux_perf_stats === nothing
 
-b = @benchmarkable sin(42.)
-results = run(b, seconds=1)
+b = @benchmarkable sin(42.0)
+results = run(b; seconds=1)
 @test results.linux_perf_stats === nothing
 
 end # module
