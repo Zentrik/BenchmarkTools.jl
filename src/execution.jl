@@ -620,6 +620,7 @@ function generate_benchmark_definition(
                     end
                     $LinuxPerf.disable!(__linux_perf_bench)
                     # trick the compiler not to eliminate the code
+                    # TODO: Check this is necessary
                     if rand() < 0
                         __linux_perf_stats = __return_val_2
                     else
