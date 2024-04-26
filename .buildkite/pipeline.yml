@@ -4,9 +4,10 @@ steps:
     plugins:
       - JuliaCI/julia#v1:
           version: "1"
-    commands: |
-      julia --version
+      - JuliaCI/julia-test#v1:
     agents:
       queue: "juliaecosystem"
+      sandbox.jl: "true"
       os: "linux"
       arch: "x86_64"
+    timeout_in_minutes: 60
