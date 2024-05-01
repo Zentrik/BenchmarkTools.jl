@@ -26,6 +26,7 @@ p = Parameters(;
     gcsample=false,
     time_tolerance=0.043,
     memory_tolerance=0.15,
+    enable_linux_perf=true,
 )
 oldseconds = BenchmarkTools.DEFAULT_PARAMETERS.seconds
 oldgctrial = BenchmarkTools.DEFAULT_PARAMETERS.gctrial
@@ -35,6 +36,7 @@ oldsamples = BenchmarkTools.DEFAULT_PARAMETERS.samples
 oldevals = BenchmarkTools.DEFAULT_PARAMETERS.evals
 oldoverhead = BenchmarkTools.DEFAULT_PARAMETERS.overhead
 oldgcsample = BenchmarkTools.DEFAULT_PARAMETERS.gcsample
+old_enable_linux_perf = BenchmarkTools.DEFAULT_PARAMETERS.enable_linux_perf
 BenchmarkTools.DEFAULT_PARAMETERS.seconds = p.seconds
 BenchmarkTools.DEFAULT_PARAMETERS.gctrial = p.gctrial
 BenchmarkTools.DEFAULT_PARAMETERS.time_tolerance = p.time_tolerance
@@ -43,6 +45,7 @@ BenchmarkTools.DEFAULT_PARAMETERS.samples = p.samples
 BenchmarkTools.DEFAULT_PARAMETERS.evals = p.evals
 BenchmarkTools.DEFAULT_PARAMETERS.overhead = p.overhead
 BenchmarkTools.DEFAULT_PARAMETERS.gcsample = p.gcsample
+BenchmarkTools.DEFAULT_PARAMETERS.enable_linux_perf = p.enable_linux_perf
 @test p == Parameters()
 @test p == Parameters(p)
 BenchmarkTools.DEFAULT_PARAMETERS.seconds = oldseconds
@@ -53,5 +56,6 @@ BenchmarkTools.DEFAULT_PARAMETERS.samples = oldsamples
 BenchmarkTools.DEFAULT_PARAMETERS.evals = oldevals
 BenchmarkTools.DEFAULT_PARAMETERS.overhead = oldoverhead
 BenchmarkTools.DEFAULT_PARAMETERS.gcsample = oldgcsample
+BenchmarkTools.DEFAULT_PARAMETERS.enable_linux_perf = old_enable_linux_perf
 
 end # module
