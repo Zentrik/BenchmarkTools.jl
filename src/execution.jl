@@ -600,7 +600,10 @@ function generate_benchmark_definition(
                 $(Expr(:tuple, quote_vars...)), __params::$BenchmarkTools.Parameters
             )
                 # Based on https://github.com/JuliaPerf/LinuxPerf.jl/blob/a7fee0ff261a5b5ce7a903af7b38d1b5c27dd931/src/LinuxPerf.jl#L1043-L1061
-                __linux_perf_options = $LinuxPerf.parse_pstats_options([])
+                # Task clock has large overhead so is not useful for the short time this is intended to run
+                # Further we benchmark anyways so no need for cycles or task clock
+                # I've tried to only use one group by getting rid of noisy or not useful metrics
+                __linux_perf_options = $LinuxPerf.parse_pstats_options(["(instructions, branch-instructions)"])
                 __linux_perf_groups = $LinuxPerf.set_default_spaces(
                     eval(__linux_perf_options.events), eval(__linux_perf_options.spaces)
                 )
@@ -611,13 +614,13 @@ function generate_benchmark_definition(
                 $(setup)
                 try
                     __evals = __params.evals
-                    $LinuxPerf.enable!(__linux_perf_bench)
+                    $LinuxPerf.enable_all!()
                     # We'll run it evals times.
                     __return_val_2 = $(invocation)
                     for __iter in 2:__evals
                         $(invocation)
                     end
-                    $LinuxPerf.disable!(__linux_perf_bench)
+                    $LinuxPerf.disable_all!()
                     # trick the compiler not to eliminate the code
                     if rand() < 0
                         __linux_perf_stats = __return_val_2
@@ -625,8 +628,6 @@ function generate_benchmark_definition(
                         __linux_perf_stats = $LinuxPerf.Stats(__linux_perf_bench)
                     end
                     return __linux_perf_stats
-                catch
-                    rethrow()
                 finally
                     close(__linux_perf_bench)
                     $(teardown)
