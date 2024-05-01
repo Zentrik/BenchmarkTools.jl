@@ -388,19 +388,28 @@ GC.gc()
 ##################################
 
 b = @benchmarkable sin(42.0)
-results = run(b; seconds=1, enable_linux_perf=true)
-@test results.linux_perf_stats !== nothing
-@test any(results.linux_perf_stats.threads) do thread
-    clock = LinuxPerf.scaledcount(thread["task-clock"])
-    !isnan(clock) && clock > 0
-end
-
-b = @benchmarkable sin(42.0)
 results = run(b; seconds=1, enable_linux_perf=false)
 @test results.linux_perf_stats === nothing
 
 b = @benchmarkable sin(42.0)
 results = run(b; seconds=1)
 @test results.linux_perf_stats === nothing
+
+b = @benchmarkable sin(42.0)
+results = run(b; seconds=1, enable_linux_perf=true)
+@test results.linux_perf_stats !== nothing
+@test any(results.linux_perf_stats.threads) do thread
+    instructions = LinuxPerf.scaledcount(thread["instructions"])
+    !isnan(instructions) && instructions > 500
+end
+
+results = run(groups; enable_linux_perf=true)
+for group in minimum(results)
+    @test group.linux_perf_stats !== nothing
+    @test any(group.linux_perf_stats.threads) do thread
+        instructions = LinuxPerf.scaledcount(thread["instructions"])
+        !isnan(instructions) && instructions > 500
+    end
+end
 
 end # module
