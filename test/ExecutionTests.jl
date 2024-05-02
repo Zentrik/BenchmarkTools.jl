@@ -387,28 +387,29 @@ GC.gc()
 # Linux Perf Integration #
 ##################################
 
-b = @benchmarkable sin(42.0)
+b = @benchmarkable sin($(Ref(42.0))[])
 results = run(b; seconds=1, enable_linux_perf=false)
 @test results.linux_perf_stats === nothing
 
-b = @benchmarkable sin(42.0)
+b = @benchmarkable sin($(Ref(42.0))[])
 results = run(b; seconds=1)
 @test results.linux_perf_stats === nothing
 
-b = @benchmarkable sin(42.0)
-results = run(b; seconds=1, enable_linux_perf=true)
+b = @benchmarkable sin($(Ref(42.0))[])
+results = run(b; seconds=1, enable_linux_perf=true, evals=10^3)
 @test results.linux_perf_stats !== nothing
 @test any(results.linux_perf_stats.threads) do thread
     instructions = LinuxPerf.scaledcount(thread["instructions"])
-    !isnan(instructions) && instructions > 500
+    !isnan(instructions) && instructions > 10^4
 end
 
+tune!(groups)
 results = run(groups; enable_linux_perf=true)
-for group in minimum(results)
-    @test group.linux_perf_stats !== nothing
-    @test any(group.linux_perf_stats.threads) do thread
+for (name, group_results) in BenchmarkTools.leaves(results)
+    @test group_results.linux_perf_stats !== nothing
+    @test any(group_results.linux_perf_stats.threads) do thread
         instructions = LinuxPerf.scaledcount(thread["instructions"])
-        !isnan(instructions) && instructions > 500
+        !isnan(instructions) && instructions > 10^3
     end
 end
 

@@ -11,7 +11,6 @@ using Profile
 using Compat
 
 using LinuxPerf: LinuxPerf
-using Random: Random
 
 ##############
 # Parameters #
