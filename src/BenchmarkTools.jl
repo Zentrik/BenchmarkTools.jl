@@ -13,18 +13,6 @@ using Compat
 using LinuxPerf: LinuxPerf
 using Random: Random
 
-const BENCHMARKTOOLS_VERSION = if VERSION >= v"1.9"
-    pkgversion(BenchmarkTools)
-else
-    v"1.4.0"
-end
-
-const LINUXPERF_VERSION = if VERSION >= v"1.9"
-    pkgversion(LinuxPerf)
-else
-    v"0.3.8"
-end
-
 ##############
 # Parameters #
 ##############
