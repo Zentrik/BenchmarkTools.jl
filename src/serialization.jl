@@ -99,8 +99,11 @@ function recover(x::Vector)
             ) && !haskey(fields, fn)
                 getfield(BenchmarkTools.DEFAULT_PARAMETERS, Symbol(fn))
             elseif fn == "linux_perf_spaces" && haskey(fields, fn)
-                length(fields[fn]) == 3 ||
-                    throw(ArgumentError("Expecting a vector of length 3 for linux_perf_spaces parameter"))
+                length(fields[fn]) == 3 || throw(
+                    ArgumentError(
+                        "Expecting a vector of length 3 for linux_perf_spaces parameter",
+                    ),
+                )
                 xsi = convert(ft, (fields[fn][1], fields[fn][2], fields[fn][3]))
             else
                 convert(ft, fields[fn])
